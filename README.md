@@ -1,8 +1,10 @@
 # Gmail Inbox Parsing
 
-I built this as a tool to help me clear out my inbox to meet the Berkeley mail 5 GB limit. This is a simple python application that parses your gmail inbox and returns the email addresses that sent the most emails to you. I had noticed that most of my gmail space was not from large attachments but from repeated spam from the same sender over many years. Once you identify the emails with the most spam, you can delete all mail from them. In the gmail app you can do this by searching "from: {email}", then "select all conversations that match this search", then "delete". 
+This is a simple python application that parses your gmail inbox and returns the email addresses that sent the most emails to you. I built this as a tool to help me clear out my inbox to meet the Berkeley mail 5 GB limit.  
 
-1. install requirements
+I had noticed that most of my gmail space was not from large attachments but from repeated spam from the same sender over many years. Once you identify the emails with the most spam, you can delete all mail from them. In the gmail app you can do this by searching "from: {email}", then "select all conversations that match this search", then "delete". 
+
+1. Install requirements
 
 		pip3 install -r requirements.py
 
