@@ -1,7 +1,6 @@
 # Gmail Inbox Parsing
 
-Python application that parses your gmail inbox and returns the count of emails from each sender.
-
+Python application that parses your gmail inbox and returns the count of emails from each sender. I had noticed that most of my gmail space was repeated spam from the same sender over many years. I built this as a tool to help me clear out my inbox by showing me the senders with the highest spam.
 
 For this script to work, you must first add an OAuth credentials json to this directory  
 
