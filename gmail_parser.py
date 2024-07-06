@@ -19,10 +19,12 @@ logger = logging.getLogger(__name__)
 # If modifying these SCOPES, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 MESSAGES_FILE = 'messages.pickle'
+SENDER_COUNTS_FILE = 'sender_counts.pickle'
 MAX_RETRIES = 5
 RETRY_BACKOFF_FACTOR = 2
 MAX_WORKERS = 6
 PORT = 8080
+
 
 def authenticate_gmail():
     creds = None
@@ -41,6 +43,7 @@ def authenticate_gmail():
     service = build('gmail', 'v1', credentials=creds, cache_discovery=False)
     return service
 
+
 def fetch_message(service, message_id, retries=MAX_RETRIES):
     for attempt in range(retries):
         try:
@@ -58,6 +61,7 @@ def fetch_message(service, message_id, retries=MAX_RETRIES):
             logger.error(f"Failed to fetch message {message_id}: {e}.")
             break
     return None
+
 
 def process_messages(service, messages, senders_count, multithreaded: bool = False):
     if multithreaded:
@@ -89,7 +93,7 @@ def process_messages(service, messages, senders_count, multithreaded: bool = Fal
                 print(f"Processed {message_count}/{len(messages)} messages...")
 
 
-def get_email_senders(service, multithreaded: bool = False):
+def get_email_senders(service, multithreaded: bool = False, len_process: int = 10000):
     senders_count = defaultdict(int)
     messages = []
 
@@ -123,17 +127,22 @@ def get_email_senders(service, multithreaded: bool = False):
             logger.error(f"Failed to fetch messages from Gmail API: {e}")
             return senders_count
 
-    len_process = 10000
     for i in range(0, len(messages), len_process):
         process_messages(service, messages[i:i+len_process], senders_count, multithreaded=multithreaded)
 
     return senders_count
 
+
 def main():
     service = authenticate_gmail()
     senders_count = get_email_senders(service)
+    with open(SENDER_COUNTS_FILE, 'wb') as f:
+        pickle.dump(senders_count, f)
+    logger.info(f"Saved {len(senders_count)} sender counts to local file.")
+
     for sender, count in senders_count.items():
         print(f"{sender}: {count}")
+
 
 if __name__ == '__main__':
     main()
