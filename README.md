@@ -18,5 +18,7 @@ To create a Google API key and set it up to read your emails, you'll need to fol
             Save and continue.
         Choose the application type (e.g., Web application).
         Add authorized redirect URIs (e.g., http://localhost if you're testing locally).
+            Specifically, add "http://localhost/8080"
+            You can also change this to another port at the top of gmail_parser.py by editing the "PORT" variable
         Click Create to generate your OAuth 2.0 Client ID and Client Secret.
         Download the credentials file, which will be in JSON format.
