@@ -4,3 +4,4 @@ credentials.json
 senders_count*
 client_secret.json
 gmail_token.json
+simple_parser_cache.pickle
