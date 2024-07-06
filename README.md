@@ -1,10 +1,16 @@
 # Gmail Inbox Parsing
 
-Python application that parses your gmail inbox and returns the count of emails from each sender. I had noticed that most of my gmail space was repeated spam from the same sender over many years. I built this as a tool to help me clear out my inbox by showing me the senders with the highest spam.
+I built this as a tool to help me clear out my inbox to meet the Berkeley mail 5 GB limit. This is a simple python application that parses your gmail inbox and returns the email addresses that sent the most emails to you. I had noticed that most of my gmail space was not from large attachments but from repeated spam from the same sender over many years. Once you identify the emails with the most spam, you can delete all mail from them. In the gmail app you can do this by searching "from: {email}", then "select all conversations that match this search", then "delete". 
 
-For this script to work, you must first add an OAuth credentials json to the root directory of this project, then run:
+1. install requirements
 
-	python3 gmail_parser.py
+		pip3 install -r requirements.py
+
+3. Create google oauth credentials (details below), and save json to project root directory
+
+4. Run app
+
+		python3 gmail_parser.py
 
 ## Credentials JSON creation:
 
