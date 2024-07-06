@@ -127,21 +127,44 @@ def get_email_senders(service, multithreaded: bool = False, len_process: int = 1
             logger.error(f"Failed to fetch messages from Gmail API: {e}")
             return senders_count
 
-    for i in range(0, len(messages), len_process):
-        process_messages(service, messages[i:i+len_process], senders_count, multithreaded=multithreaded)
+    for iter, i in enumerate(range(0, len(messages), len_process)):
+        curr_dict = defaultdict(int)
+        curr_file = f'senders_count_{iter+1}.pickle'
+        if os.path.exists(curr_file):
+            with open(curr_file, 'rb') as f:
+                curr_dict = pickle.load(f)
+
+            print(f'Loaded {curr_file} from cache!')
+
+        else:
+            process_messages(service, messages[i:i+len_process], curr_dict, multithreaded=multithreaded)
+            with open(curr_file, 'wb') as f:
+                pickle.dump(curr_dict, f)
+
+            print(f'Created {curr_file} and saved to {os.path.join(os.path.curdir, curr_file)}!')
+
+        senders_count.update(curr_dict)
 
     return senders_count
 
 
 def main():
     service = authenticate_gmail()
-    senders_count = get_email_senders(service)
-    with open(SENDER_COUNTS_FILE, 'wb') as f:
-        pickle.dump(senders_count, f)
-    logger.info(f"Saved {len(senders_count)} sender counts to local file.")
 
-    for sender, count in senders_count.items():
-        print(f"{sender}: {count}")
+    if os.path.exists(SENDER_COUNTS_FILE):
+        logger.info("Loading messages from local file...")
+        with open(SENDER_COUNTS_FILE, 'rb') as f:
+                senders_count = pickle.load(f)
+    else:
+        senders_count = get_email_senders(service)
+        with open(SENDER_COUNTS_FILE, 'wb') as f:
+            pickle.dump(senders_count, f)
+        logger.info(f"Saved {len(senders_count)} sender counts to local file.")
+
+    arr_counts = [(sender, count) for sender, count in senders_count.items()]
+    arr_counts.sort(key=lambda x: x[1], reverse=True)
+    for row in arr_counts[:20]:
+        print(row)
 
 
 if __name__ == '__main__':

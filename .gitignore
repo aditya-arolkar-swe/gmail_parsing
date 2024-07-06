@@ -1,3 +1,6 @@
 messages.pickle
 token.pickle
 credentials.json
+senders_count_*
+client_secret.json
+gmail_token.json
