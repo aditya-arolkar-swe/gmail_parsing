@@ -14,6 +14,22 @@ I had noticed that most of my gmail space was not from large attachments but fro
 
 		python3 gmail_parser.py
 
+5. Optional flags:
+
+		usage: gmail_parser.py [-h] [--no-cache NO_CACHE] [--top-n-senders TOP_N_SENDERS] [--multithreaded MULTITHREADED]
+		
+		Parses your gmail inbox, and returns the top X 20 senders to your inbox
+		
+		options:
+		  -h, --help            show this help message and exit
+		  --no-cache NO_CACHE   After first run, will store a cache and uses that by default for subsequent runs. Use this flag to refresh your cache.
+		  --top-n-senders TOP_N_SENDERS
+		                        Number of senders to output. Default: 20
+		  --multithreaded MULTITHREADED
+		                        Attempts to multithread the loading of messages. Currently not working. Needs some work...
+
+
+
 ## Credentials JSON creation:
 
 To create a Google API key and set it up to read your emails, you'll need to follow these steps:
